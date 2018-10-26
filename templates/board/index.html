@@ -1,0 +1,56 @@
+{% extends '../base.html' %}
+{% block css_link %}
+<link href="/assets/css/board.css" rel="stylesheet" type="text/css">
+{% endblock %}
+<style>
+</style>
+{% block content %}
+		<div id="content">
+			<div id="board">
+
+				<form id="search_form">
+					<input type="text" value="검색은 구현되지 않았습니다.">
+				</form>
+				<table class="tbl-ex">
+					<tr>
+						<th>번호</th>
+						<th>제목</th>
+						<th>글쓴이</th>
+						<th>조회수</th>
+						<th>작성일</th>
+						<th>&nbsp;</th>
+					</tr>
+					{% for board in board_list %}
+					<tr>
+						<td>{{ board.id }}</td>
+						<td id="title" style="padding-left:calc(20px*{{board.depth}})"><a href="view?id={{board.id}}">{% if board.depth == 0 %}{{ board.title }}
+																					  {% else %}<img src = "/assets/images/reply.png" style="padding-right:2px">{{ board.title }}{% endif %}</a></td>
+						<td>{{ board.user_name }}</td>
+						<td>{{ board.hit }}</td>
+						<td>{{ board.reg_date }}</td>
+						{% if request.session.authuser is None  %}
+						<td></td>
+						{% else %}
+							{% if request.session.authuser.id == board.user_id %}
+								<td><a href="delete?id={{board.id}}" class="del">삭제</a></td>
+							{% else %}
+								<td></td>
+							{% endif %}
+						{% endif %}
+					</tr>
+					{% endfor %}
+				</table>
+				<div class="pager">
+					<ul>
+						페이징은 구현되지 않았습니다.
+					</ul>
+				</div>
+				<div class="bottom">
+				{% if request.session.authuser is None  %}
+				{% else %}
+					<a href="write" id="new-book">글쓰기</a>
+				{% endif %}
+				</div>
+			</div>
+		</div>
+{% endblock %}
